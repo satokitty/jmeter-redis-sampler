@@ -1,0 +1,10 @@
+modules:
+  jmeter:
+  detect-plugins: true
+  
+
+execution:
+- concurrency: 1
+  ramp-up: 10s
+  hold-for: 2m
+  scenario: 

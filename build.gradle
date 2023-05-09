@@ -1,0 +1,18 @@
+plugins {
+  id 'application'
+  id 'groovy'
+}
+
+application {
+  mainClass = 'com.example.jmeter.redis.Main'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation 'redis.clients:jedis:4.3.2'
+  implementation 'org.apache.groovy:groovy-all:4.0.11'
+  implementation 'org.apache.jmeter:ApacheJMeter:5.4.3'
+}
