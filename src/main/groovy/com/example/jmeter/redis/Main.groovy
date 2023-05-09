@@ -1,9 +1,7 @@
-package com.github.satokitty.jmeter.redis
-
 import redis.clients.jedis.JedisPooled
 
 def redisHost = vars.get("redis.host")
-def redisPort = vars.get("redis.port")
+def redisPort = vars.get("redis.port").toInteger()
 
 def jedis = new JedisPooled(redisHost, redisPort)
 
@@ -21,8 +19,10 @@ def removedKeys = expectedKeys - actualKeys
 def addedKeys = actualKeys - expectedKeys
 Map<String, List<String>> changed = (actualKeys - addedKeys).findAll { expected[it] != actual[it] }.collectEntries { [it, [expected[it], actual[it]]]}
 
-println("removed keys: $removedKeys")
-println("added keys: $addedKeys")
-println("changed:")
-changed.each { println("$it.key: expected=${it.value[0]}, actual=${it.value[1]}") }
+def resultChanged = changed.collect { "$it.key: expected=${it.value[0]}, actual=${it.value[1]}" }.join("\n")
 
+SampleResult.setResponseData("""removed keys: $removedKeys
+added keys: $addedKeys
+changed:
+$resultChanged
+""")
