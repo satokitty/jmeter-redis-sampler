@@ -1,0 +1,20 @@
+FROM redis:7.0.11
+
+ARG K6_VERSION=0.44.1
+ENV JMETER_HOME=/usr/share/jmeter
+
+RUN apt-get update \
+    && apt-get install -y jmeter wget ca-certificates xsltproc \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN wget -P ${JMETER_HOME}/lib/ https://repo1.maven.org/maven2/org/json/json/20230227/json-20230227.jar \
+    && wget -P ${JMETER_HOME}/lib/ https://repo1.maven.org/maven2/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar \
+    && wget -P ${JMETER_HOME}/lib/ https://repo1.maven.org/maven2/org/apache/commons/commons-pool2/2.11.1/commons-pool2-2.11.1.jar \
+    && wget -P ${JMETER_HOME}/lib/ https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar
+
+RUN wget -P /tmp/ https://github.com/grafana/k6/releases/download/v${K6_VERSION}/k6-v${K6_VERSION}-linux-amd64.deb \
+    && dpkg -i /tmp/k6-v${K6_VERSION}-linux-amd64.deb \
+    && rm -f /tmp/k6-v${K6_VERSION}-linux-amd.deb
+
+CMD ["bash"]
